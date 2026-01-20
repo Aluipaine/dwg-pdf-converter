@@ -152,7 +152,7 @@ pnpm install
 
 2. Install Python dependencies:
 ```bash
-sudo pip3 install ezdxf celery redis pillow reportlab flask
+sudo pip3 install ezdxf celery redis pillow reportlab flask matplotlib
 ```
 
 3. Push database schema:

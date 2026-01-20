@@ -1,6 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -46,23 +46,31 @@
 :root {
   /* CAD-inspired royal blue theme with technical precision */
   --radius: 0.5rem;
-  --background: oklch(0.18 0.08 250); /* Deep royal blue */
-  --foreground: oklch(0.98 0 0); /* Crisp white */
-  --card: oklch(0.22 0.07 250); /* Slightly lighter blue */
+  --background: oklch(0.18 0.08 250);
+  /* Deep royal blue */
+  --foreground: oklch(0.98 0 0);
+  /* Crisp white */
+  --card: oklch(0.22 0.07 250);
+  /* Slightly lighter blue */
   --card-foreground: oklch(0.98 0 0);
   --popover: oklch(0.20 0.08 250);
   --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.65 0.20 250); /* Bright technical blue */
+  --primary: oklch(0.65 0.20 250);
+  /* Bright technical blue */
   --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.28 0.06 250); /* Muted blue-gray */
+  --secondary: oklch(0.28 0.06 250);
+  /* Muted blue-gray */
   --secondary-foreground: oklch(0.95 0 0);
   --muted: oklch(0.25 0.05 250);
   --muted-foreground: oklch(0.70 0.02 250);
-  --accent: oklch(0.70 0.25 200); /* Cyan accent for highlights */
+  --accent: oklch(0.70 0.25 200);
+  /* Cyan accent for highlights */
   --accent-foreground: oklch(0.15 0.08 250);
-  --destructive: oklch(0.60 0.25 25); /* Technical red */
+  --destructive: oklch(0.60 0.25 25);
+  /* Technical red */
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.35 0.08 250); /* Technical grid lines */
+  --border: oklch(0.35 0.08 250);
+  /* Technical grid lines */
   --input: oklch(0.35 0.08 250);
   --ring: oklch(0.65 0.20 250);
   --sidebar: oklch(0.20 0.08 250);
@@ -86,13 +94,14 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     position: relative;
     overflow-x: hidden;
   }
-  
+
   /* Technical grid pattern background */
   body::before {
     content: '';
@@ -101,14 +110,14 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
+    background-image:
       linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 20px 20px;
     pointer-events: none;
     z-index: 0;
   }
-  
+
   /* Technical corner markers */
   body::after {
     content: '';
@@ -122,30 +131,36 @@
     pointer-events: none;
     z-index: 1;
   }
-  
+
   /* All content above the background */
   #root {
     position: relative;
     z-index: 2;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-bold tracking-tight;
     font-weight: 700;
     letter-spacing: -0.02em;
   }
-  
+
   h1 {
     @apply text-4xl md:text-5xl;
   }
-  
+
   h2 {
     @apply text-3xl md:text-4xl;
   }
-  
+
   h3 {
     @apply text-2xl md:text-3xl;
   }
+
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
   [type="button"]:not(:disabled),
@@ -160,6 +175,7 @@
 }
 
 @layer components {
+
   /**
    * Custom container utility that centers content and adds responsive padding.
    *
@@ -177,7 +193,8 @@
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1rem; /* 16px - mobile padding */
+    padding-left: 1rem;
+    /* 16px - mobile padding */
     padding-right: 1rem;
   }
 
@@ -188,16 +205,19 @@
 
   @media (min-width: 640px) {
     .container {
-      padding-left: 1.5rem; /* 24px - tablet padding */
+      padding-left: 1.5rem;
+      /* 24px - tablet padding */
       padding-right: 1.5rem;
     }
   }
 
   @media (min-width: 1024px) {
     .container {
-      padding-left: 2rem; /* 32px - desktop padding */
+      padding-left: 2rem;
+      /* 32px - desktop padding */
       padding-right: 2rem;
-      max-width: 1280px; /* Standard content width */
+      max-width: 1280px;
+      /* Standard content width */
     }
   }
 }
