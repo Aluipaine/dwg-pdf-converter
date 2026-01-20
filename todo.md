@@ -75,3 +75,22 @@
 - [x] Create deployment guide
 - [x] Finalize README with setup instructions
 - [ ] Create final checkpoint for deliveryFinal checkpoint and delivery
+
+
+## Bug Fixes: Routing Issues
+- [ ] Investigate 404 errors when clicking links
+- [ ] Fix Link component usage in all pages
+- [ ] Verify wouter routing configuration
+- [ ] Test all navigation flows (Home → Dashboard → Admin → Upgrade)
+- [ ] Ensure proper href attributes on all links
+
+
+## Layout Changes & Documentation
+- [x] Add upload functionality to home page hero section
+- [x] Implement guest user upload (1 file limit without account)
+- [x] Update upload limits display (Free: 5/month, Premium: unlimited)
+- [x] Move "Engineered for Excellence" features section to bottom of home page
+- [x] Create Ubuntu installation guide (INSTALL_UBUNTU.md)
+- [x] Create Windows installation guide (INSTALL_WINDOWS.md)
+- [x] Test guest upload functionality
+- [x] Test updated home page layout
