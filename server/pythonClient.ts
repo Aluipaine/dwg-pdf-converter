@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const PYTHON_SERVICE_URL = process.env.PYTHON_SERVICE_URL || "http://localhost:5001";
+const PYTHON_SERVICE_URL =
+  process.env.PYTHON_SERVICE_URL || "http://localhost:5001";
 
 export interface ConversionJobRequest {
   input_path: string;
@@ -51,7 +52,9 @@ export class PythonConversionClient {
    */
   async healthCheck(): Promise<boolean> {
     try {
-      const response = await axios.get(`${this.baseUrl}/health`, { timeout: 5000 });
+      const response = await axios.get(`${this.baseUrl}/health`, {
+        timeout: 5000,
+      });
       return response.data.status === "healthy";
     } catch (error) {
       console.error("[PythonClient] Health check failed:", error);
@@ -62,17 +65,26 @@ export class PythonConversionClient {
   /**
    * Submit a conversion job to the queue
    */
-  async submitConversion(request: ConversionJobRequest): Promise<ConversionJobResponse> {
+  async submitConversion(
+    request: ConversionJobRequest
+  ): Promise<ConversionJobResponse> {
     try {
-      const response = await axios.post<ConversionJobResponse>(`${this.baseUrl}/convert`, request, {
-        timeout: 10000,
-      });
+      const response = await axios.post<ConversionJobResponse>(
+        `${this.baseUrl}/convert`,
+        request,
+        {
+          timeout: 10000,
+        }
+      );
       return response.data;
     } catch (error: any) {
       console.error("[PythonClient] Failed to submit conversion:", error);
       return {
         success: false,
-        error: error.response?.data?.error || error.message || "Failed to submit conversion job",
+        error:
+          error.response?.data?.error ||
+          error.message ||
+          "Failed to submit conversion job",
       };
     }
   }
@@ -82,9 +94,12 @@ export class PythonConversionClient {
    */
   async getTaskStatus(taskId: string): Promise<TaskStatusResponse | null> {
     try {
-      const response = await axios.get<TaskStatusResponse>(`${this.baseUrl}/status/${taskId}`, {
-        timeout: 5000,
-      });
+      const response = await axios.get<TaskStatusResponse>(
+        `${this.baseUrl}/status/${taskId}`,
+        {
+          timeout: 5000,
+        }
+      );
       return response.data;
     } catch (error: any) {
       console.error("[PythonClient] Failed to get task status:", error);
@@ -97,7 +112,11 @@ export class PythonConversionClient {
    */
   async cancelTask(taskId: string): Promise<boolean> {
     try {
-      const response = await axios.post(`${this.baseUrl}/cancel/${taskId}`, {}, { timeout: 5000 });
+      const response = await axios.post(
+        `${this.baseUrl}/cancel/${taskId}`,
+        {},
+        { timeout: 5000 }
+      );
       return response.data.success === true;
     } catch (error) {
       console.error("[PythonClient] Failed to cancel task:", error);
@@ -110,9 +129,12 @@ export class PythonConversionClient {
    */
   async getQueueStats(): Promise<QueueStatsResponse | null> {
     try {
-      const response = await axios.get<QueueStatsResponse>(`${this.baseUrl}/queue/stats`, {
-        timeout: 5000,
-      });
+      const response = await axios.get<QueueStatsResponse>(
+        `${this.baseUrl}/queue/stats`,
+        {
+          timeout: 5000,
+        }
+      );
       return response.data;
     } catch (error) {
       console.error("[PythonClient] Failed to get queue stats:", error);
