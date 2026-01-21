@@ -6,13 +6,13 @@ This comprehensive guide walks you through installing and configuring the DWG to
 
 Before beginning the installation process, ensure your Ubuntu system meets the following minimum requirements:
 
-| Component | Requirement |
-|-----------|-------------|
-| **Operating System** | Ubuntu 22.04 LTS or later (64-bit) |
-| **RAM** | Minimum 4GB, recommended 8GB or more |
-| **Disk Space** | At least 10GB free space for application and dependencies |
-| **CPU** | 2+ cores recommended for optimal performance |
-| **Network** | Internet connection for package installation and S3 storage |
+| Component            | Requirement                                                 |
+| -------------------- | ----------------------------------------------------------- |
+| **Operating System** | Ubuntu 22.04 LTS or later (64-bit)                          |
+| **RAM**              | Minimum 4GB, recommended 8GB or more                        |
+| **Disk Space**       | At least 10GB free space for application and dependencies   |
+| **CPU**              | 2+ cores recommended for optimal performance                |
+| **Network**          | Internet connection for package installation and S3 storage |
 
 ## Prerequisites Installation
 
@@ -138,19 +138,19 @@ With all prerequisites in place, proceed with installing the DWG to PDF Converte
 If you have the application source code in a Git repository, clone it to your local system:
 
 ```bash
-cd /opt
-sudo git clone https://github.com/yourusername/dwg-pdf-converter.git
-cd dwg-pdf-converter
+cd /var/www/krutoedemo_g_usr/data/www
+sudo git clone https://github.com/aluipaine/dwg-pdf-converter.git dwg.gromi.fi
+cd dwg.gromi.fi
 ```
 
-Alternatively, if you have a compressed archive, extract it to `/opt/dwg-pdf-converter`.
+Alternatively, if you have a compressed archive, extract it to `/var/www/krutoedemo_g_usr/data/www/dwg.gromi.fi`.
 
 ### Install Node.js Dependencies
 
 Navigate to the project directory and install all Node.js dependencies using pnpm:
 
 ```bash
-cd /opt/dwg-pdf-converter
+cd /var/www/krutoedemo_g_usr/data/www/dwg.gromi.fi
 pnpm install
 ```
 
@@ -166,14 +166,14 @@ sudo pip3 install ezdxf celery redis pillow reportlab flask
 
 These packages provide the following functionality:
 
-| Package | Purpose |
-|---------|---------|
-| **ezdxf** | DXF file parsing and manipulation |
-| **celery** | Distributed task queue for async processing |
-| **redis** | Python client for Redis message broker |
-| **pillow** | Image processing library |
-| **reportlab** | PDF generation capabilities |
-| **flask** | Lightweight web framework for Python API |
+| Package       | Purpose                                     |
+| ------------- | ------------------------------------------- |
+| **ezdxf**     | DXF file parsing and manipulation           |
+| **celery**    | Distributed task queue for async processing |
+| **redis**     | Python client for Redis message broker      |
+| **pillow**    | Image processing library                    |
+| **reportlab** | PDF generation capabilities                 |
+| **flask**     | Lightweight web framework for Python API    |
 
 ## Database Configuration
 
@@ -204,7 +204,7 @@ EXIT;
 Create a `.env` file in the project root directory with your database credentials:
 
 ```bash
-cd /opt/dwg-pdf-converter
+cd /var/www/krutoedemo_g_usr/data/www/dwg.gromi.fi
 sudo nano .env
 ```
 
@@ -226,7 +226,7 @@ OWNER_NAME=Your Name
 sudo chmod 600 .env
 ```
 
-### Initialize Database Schema
+### Initialize Database Schema Я ТУТ!
 
 Push the database schema to create all required tables:
 
@@ -245,7 +245,7 @@ Configure and start the Python conversion service that handles DWG/DXF to PDF co
 Grant execute permissions to the service management scripts:
 
 ```bash
-cd /opt/dwg-pdf-converter/python_service
+cd /var/www/krutoedemo_g_usr/data/www/dwg.gromi.fi/python_service
 sudo chmod +x start_services.sh stop_services.sh
 ```
 
@@ -271,7 +271,7 @@ curl http://localhost:5000/health
 You should receive a JSON response indicating the service is healthy:
 
 ```json
-{"status": "healthy", "service": "dwg-converter-api"}
+{ "status": "healthy", "service": "dwg-converter-api" }
 ```
 
 ## Application Startup
@@ -283,7 +283,7 @@ With all components configured, start the main application server.
 For development and testing purposes, start the application in development mode with hot-reloading:
 
 ```bash
-cd /opt/dwg-pdf-converter
+cd /var/www/krutoedemo_g_usr/data/www/dwg.gromi.fi
 pnpm dev
 ```
 
@@ -294,7 +294,7 @@ The application will be accessible at `http://localhost:3000`. The development s
 For production deployment, build the application and start it in production mode:
 
 ```bash
-cd /opt/dwg-pdf-converter
+cd /var/www/krutoedemo_g_usr/data/www/dwg.gromi.fi
 pnpm build
 pnpm start
 ```
@@ -323,9 +323,9 @@ After=network.target mysql.service redis-server.service
 [Service]
 Type=simple
 User=www-data
-WorkingDirectory=/opt/dwg-pdf-converter
+WorkingDirectory=/var/www/krutoedemo_g_usr/data/www/dwg.gromi.fi
 Environment="NODE_ENV=production"
-ExecStart=/usr/bin/node /opt/dwg-pdf-converter/dist/index.js
+ExecStart=/usr/bin/node /var/www/krutoedemo_g_usr/data/www/dwg.gromi.fi/dist/index.js
 Restart=always
 RestartSec=10
 
@@ -351,8 +351,8 @@ After=network.target redis-server.service
 [Service]
 Type=simple
 User=www-data
-WorkingDirectory=/opt/dwg-pdf-converter/python_service
-ExecStart=/usr/bin/python3.11 /opt/dwg-pdf-converter/python_service/api_server.py
+WorkingDirectory=/var/www/krutoedemo_g_usr/data/www/dwg.gromi.fi/python_service
+ExecStart=/usr/bin/python3.11 /var/www/krutoedemo_g_usr/data/www/dwg.gromi.fi/python_service/api_server.py
 Restart=always
 RestartSec=10
 
@@ -376,7 +376,7 @@ After=network.target redis-server.service
 [Service]
 Type=simple
 User=www-data
-WorkingDirectory=/opt/dwg-pdf-converter/python_service
+WorkingDirectory=/var/www/krutoedemo_g_usr/data/www/dwg.gromi.fi/python_service
 ExecStart=/usr/bin/celery -A celery_app worker --loglevel=info
 Restart=always
 RestartSec=10
@@ -528,7 +528,7 @@ Perform comprehensive testing to ensure all components are functioning correctly
 Verify the application can connect to the database:
 
 ```bash
-cd /opt/dwg-pdf-converter
+cd /var/www/krutoedemo_g_usr/data/www/dwg.gromi.fi
 pnpm db:push
 ```
 
@@ -545,7 +545,7 @@ curl http://localhost:5000/health
 Expected response:
 
 ```json
-{"status": "healthy", "service": "dwg-converter-api"}
+{ "status": "healthy", "service": "dwg-converter-api" }
 ```
 
 ### Test Application Access
@@ -635,7 +635,7 @@ sudo apt-get upgrade -y
 Update Node.js dependencies:
 
 ```bash
-cd /opt/dwg-pdf-converter
+cd /var/www/krutoedemo_g_usr/data/www/dwg.gromi.fi
 pnpm update
 ```
 
@@ -660,6 +660,7 @@ sudo journalctl -u dwg-converter.service -n 50
 ```
 
 Common causes include:
+
 - Missing or incorrect environment variables in `.env`
 - Database connection failures
 - Port 3000 already in use by another application
@@ -739,8 +740,8 @@ Implement the following security best practices for production deployments.
 Ensure proper file ownership and permissions:
 
 ```bash
-sudo chown -R www-data:www-data /opt/dwg-pdf-converter
-sudo chmod 600 /opt/dwg-pdf-converter/.env
+sudo chown -R www-data:www-data /var/www/krutoedemo_g_usr/data/www/dwg.gromi.fi
+sudo chmod 600 /var/www/krutoedemo_g_usr/data/www/dwg.gromi.fi/.env
 ```
 
 ### Database Security
@@ -772,7 +773,7 @@ sudo ufw allow 'Nginx Full'
 
 For further assistance and information, consult the following resources:
 
-- **Project README**: `/opt/dwg-pdf-converter/README.md`
+- **Project README**: `/var/www/krutoedemo_g_usr/data/www/dwg.gromi.fi/README.md`
 - **API Documentation**: Available in the project repository
 - **Ubuntu Server Guide**: https://ubuntu.com/server/docs
 - **Node.js Documentation**: https://nodejs.org/docs
