@@ -78,17 +78,20 @@ class OAuthService {
 
 const createOAuthHttpClient = (): AxiosInstance =>
   axios.create({
-    baseURL: ENV.oAuthServerUrl,
+    // Use a placeholder URL if not configured - SDK methods will fail gracefully
+    baseURL: ENV.oAuthServerUrl || "http://localhost:9999",
     timeout: AXIOS_TIMEOUT_MS,
   });
 
 class SDKServer {
   private readonly client: AxiosInstance;
   private readonly oauthService: OAuthService;
+  private readonly isOAuthConfigured: boolean;
 
   constructor(client: AxiosInstance = createOAuthHttpClient()) {
     this.client = client;
     this.oauthService = new OAuthService(this.client);
+    this.isOAuthConfigured = Boolean(ENV.oAuthServerUrl);
   }
 
   private deriveLoginMethod(

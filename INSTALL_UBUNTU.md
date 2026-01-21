@@ -211,14 +211,46 @@ sudo nano .env
 Add the following environment variables, replacing the placeholder values with your actual configuration:
 
 ```env
+# Server
+NODE_ENV=production
+PORT=3089
+
+# Database
 DATABASE_URL=mysql://dwg_user:your_secure_password_here@localhost:3306/dwg_converter
+
+# Security
 JWT_SECRET=generate_a_random_64_character_string_here
+
+# Python Service Connection (REQUIRED - connects Node.js to Python conversion API)
+PYTHON_SERVICE_URL=http://localhost:5001
+
+# Google OAuth (get credentials from https://console.cloud.google.com/)
+GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+# Stripe (optional - for payments)
 STRIPE_SECRET_KEY=your_stripe_secret_key
 STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
 VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
-OWNER_OPEN_ID=your_manus_oauth_open_id
+
+# Admin user (set to your Google OAuth ID after first login)
+OWNER_OPEN_ID=google_your_google_id
 OWNER_NAME=Your Name
 ```
+
+### Setting up Google OAuth
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Navigate to **APIs & Services** → **Credentials**
+4. Click **Create Credentials** → **OAuth 2.0 Client IDs**
+5. Select **Web application**
+6. Add authorized redirect URIs:
+   - `http://localhost:3000/api/oauth/google/callback` (development)
+   - `https://your-domain.com/api/oauth/google/callback` (production)
+7. Copy the Client ID and Client Secret to your `.env` file
+
+**Note:** If Google OAuth is not configured, the app will fall back to dev login mode.
 
 **Security Note**: Ensure the `.env` file has restricted permissions:
 
@@ -226,7 +258,7 @@ OWNER_NAME=Your Name
 sudo chmod 600 .env
 ```
 
-### Initialize Database Schema Я ТУТ!
+### Initialize Database Schema
 
 Push the database schema to create all required tables:
 
@@ -254,24 +286,28 @@ sudo chmod +x start_services.sh stop_services.sh
 Launch the Flask API server and Celery workers:
 
 ```bash
-./start_services.sh
+# Start Flask API on port 5001
+PYTHON_SERVICE_PORT=5001 python3 api_server.py &
+
+# Start Celery worker in another terminal
+celery -A celery_app worker --loglevel=info &
 ```
 
-This script starts two services:
+This starts two services:
 
-1. **Flask API Server** (port 5000): Receives conversion requests from the Node.js backend
+1. **Flask API Server** (port 5001): Receives conversion requests from the Node.js backend
 2. **Celery Worker**: Processes conversion tasks from the Redis queue
 
 Verify the services are running:
 
 ```bash
-curl http://localhost:5000/health
+curl http://localhost:5001/health
 ```
 
 You should receive a JSON response indicating the service is healthy:
 
 ```json
-{ "status": "healthy", "service": "dwg-converter-api" }
+{ "status": "healthy", "service": "dwg-converter", "version": "1.0.0" }
 ```
 
 ## Application Startup
@@ -352,6 +388,8 @@ After=network.target redis-server.service
 Type=simple
 User=www-data
 WorkingDirectory=/var/www/krutoedemo_g_usr/data/www/dwg.gromi.fi/python_service
+Environment="PYTHON_SERVICE_PORT=5001"
+Environment="REDIS_URL=redis://localhost:6379/0"
 ExecStart=/usr/bin/python3.11 /var/www/krutoedemo_g_usr/data/www/dwg.gromi.fi/python_service/api_server.py
 Restart=always
 RestartSec=10
@@ -539,13 +577,13 @@ This command should complete without errors.
 Test the Python conversion API:
 
 ```bash
-curl http://localhost:5000/health
+curl http://localhost:5001/health
 ```
 
 Expected response:
 
 ```json
-{ "status": "healthy", "service": "dwg-converter-api" }
+{ "status": "healthy", "service": "dwg-converter", "version": "1.0.0" }
 ```
 
 ### Test Application Access

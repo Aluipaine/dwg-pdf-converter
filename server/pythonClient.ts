@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const PYTHON_SERVICE_URL = process.env.PYTHON_SERVICE_URL || "http://localhost:5000";
+const PYTHON_SERVICE_URL = process.env.PYTHON_SERVICE_URL || "http://localhost:5001";
 
 export interface ConversionJobRequest {
   input_path: string;
