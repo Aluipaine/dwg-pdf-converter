@@ -231,8 +231,16 @@ export const appRouter = router({
 
     // Create Stripe checkout session for Premium upgrade
     createCheckout: protectedProcedure.mutation(async ({ ctx }) => {
+      const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+      if (!stripeSecretKey) {
+        throw new TRPCError({
+          code: "PRECONDITION_FAILED",
+          message: "Stripe is not configured. Please contact support.",
+        });
+      }
+
       const Stripe = (await import("stripe")).default;
-      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
+      const stripe = new Stripe(stripeSecretKey, {
         apiVersion: "2025-12-15.clover",
       });
 

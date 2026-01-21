@@ -2,13 +2,22 @@ import { Request, Response } from "express";
 import Stripe from "stripe";
 import * as db from "./db";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
-  apiVersion: "2025-12-15.clover",
-});
+// Only initialize Stripe if the secret key is provided
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+const stripe = stripeSecretKey
+  ? new Stripe(stripeSecretKey, {
+      apiVersion: "2025-12-15.clover",
+    })
+  : null;
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || "";
 
 export async function handleStripeWebhook(req: Request, res: Response) {
+  if (!stripe) {
+    console.log("[Stripe Webhook] Stripe not configured, skipping webhook");
+    return res.status(200).send("Stripe not configured");
+  }
+
   const sig = req.headers["stripe-signature"];
 
   if (!sig) {
